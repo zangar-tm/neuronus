@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    image: nginx:latest
+    container_name: nginx_container
+    ports:
+      - "8888:80"
+    volumes:
+      - ./public:/var/www/html
+    depends_on:
+      - php
+      - db
+
+  php:
+    build:
+      context: ./php
+    container_name: php_container
+    volumes:
+      - ./public:/var/www/html
+      - ./app:/var/www/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    container_name: db_container
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:

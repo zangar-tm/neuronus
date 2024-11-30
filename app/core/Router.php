@@ -22,7 +22,7 @@ class Router
         $this->routes[$method][$uri] = $action;
 
         if ($middleware) {
-            $this->middleware[$method][$uri][] = $middleware;
+            $this->middleware[$method][$uri] = $middleware;
         }
     }
 
@@ -32,22 +32,29 @@ class Router
         $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
 
         if (isset($this->routes[$method][$uri])) {
-            [$controller, $method] = $this->routes[$method][$uri];
+            [$controller, $methodFunc] = $this->routes[$method][$uri];
+            if(isset($this->middleware[$method][$uri])){
+                $this->checkMiddleware($this->middleware[$method][$uri]);
+            };
 
             if (!class_exists($controller)) {
                 throw new \Exception("Контроллер $controller не найден.");
             }
 
-            if (!method_exists($controller, $method)) {
-                throw new \Exception("Метод $method в контроллере $controller не найден.");
+            if (!method_exists($controller, $methodFunc)) {
+                throw new \Exception("Метод $methodFunc в контроллере $controller не найден.");
             }
 
             $controllerInstance = new $controller();
-            $controllerInstance->$method();
+            $controllerInstance->$methodFunc();
         } else {
             http_response_code(404);
             echo "404 Not Found";
         }
     }
 
+    private function checkMiddleware($method)
+    {
+        return Middleware::$method();
+    }
 }

@@ -7,16 +7,12 @@ use app\models\User;
 use PDO;
 class UserController extends Controller{
     public function index() {
-        Middleware::auth();
-        Middleware::isAdmin();
         $user = new User();
         $users = $user->getAll();
         return $this->render('users', $users);
     }
 
     public function store() {
-        Middleware::auth();
-        Middleware::isAdmin();
         $data = $_POST;
         $user = new User();
         $user->create($data);
@@ -24,8 +20,6 @@ class UserController extends Controller{
     }
 
     public function delete() {
-        Middleware::auth();
-        Middleware::isAdmin();
         $id = $_POST['id'];
         $user = new User();
         $user->delete($id);

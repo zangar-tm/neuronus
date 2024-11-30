@@ -10,24 +10,29 @@ class Middleware
             header('Location: /login');
             exit;
         }
+        return true;
     }
 
     public static function isAdmin()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+        self::auth();
+        if ($_SESSION['user']['role'] !== 'admin') {
             http_response_code(403);
             echo "403 Forbidden: Access Denied";
             exit;
         }
+        return true;
     }
 
     public static function isManager()
     {
-        if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['role'], ['admin', 'manager'])) {
+        self::auth();
+        if (!in_array($_SESSION['user']['role'], ['admin', 'manager'])) {
             http_response_code(403);
             echo "403 Forbidden: Access Denied";
             exit;
         }
+        return true;
     }
 }
 

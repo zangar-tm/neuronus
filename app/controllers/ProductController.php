@@ -15,7 +15,10 @@ class ProductController extends Controller{
     public function store() {
         $data = $_POST;
         $product = new Product();
-        $product->create($data);
+        $product->create([
+            'name'=>$data['name'],
+            'price'=>$data['price'],
+        ]);
         $this->redirect('/');
     }
 

@@ -15,7 +15,12 @@ class UserController extends Controller{
     public function store() {
         $data = $_POST;
         $user = new User();
-        $user->create($data);
+        $password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user->create([
+            'username' => $data['username'],
+            'password' => $password,
+            'role' => $data['role']
+        ]);
         $this->redirect('/users');    
     }
 

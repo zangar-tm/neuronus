@@ -24,8 +24,23 @@ class UserController extends Controller{
         $this->redirect('/users');    
     }
 
-    public function delete() {
-        $id = $_POST['id'];
+    public function update($id){
+        $data = $_POST;
+        $user = new User();
+        $user->update($id, [
+            'username' => $data['username'],
+            'role' => $data['role']
+        ]);
+        $this->redirect('/users');
+    }
+
+    public function edit($id){
+        $user = new User();
+        $userData = $user->getById($id);
+        $this->render('user-update', [$userData]);
+    }
+
+    public function delete($id) {
         $user = new User();
         $user->delete($id);
         $this->redirect('/users');  

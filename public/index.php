@@ -19,11 +19,15 @@ $router = new Router();
 $router->get('/dashboard', [DashboardController::class, 'getProductStats'],'auth');
 $router->get('/', [ProductController::class, 'index'],'isManager');
 $router->post('/products', [ProductController::class, 'store'],'isManager');
-$router->post('/products/delete', [ProductController::class, 'delete'],'isManager'); //TODO: сделать удаление по id products/{id}
+$router->get('/products/{id}', [ProductController::class, 'edit'],'isManager');
+$router->post('/products/{id}/update', [ProductController::class, 'update'],'isManager');
+$router->post('/products/{id}/delete', [ProductController::class, 'delete'],'isManager');
 
 $router->get('/users', [UserController::class, 'index'],'isAdmin');
 $router->post('/users', [UserController::class, 'store'],'isAdmin');
-$router->post('/users/delete', [UserController::class, 'delete'],'isAdmin'); //TODO: сделать удаление по id users/{id}
+$router->get('/users/{id}', [UserController::class, 'edit'],'isAdmin');
+$router->post('/users/{id}/update', [UserController::class, 'update'],'isAdmin');
+$router->post('/users/{id}/delete', [UserController::class, 'delete'],'isAdmin');
 
 $router->get('/login', [AuthController::class, 'loginPage']);
 $router->post('/login', [AuthController::class, 'login']);

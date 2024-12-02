@@ -41,10 +41,11 @@ $name = $_SESSION['user']['username']??'';
                     <td><?= $item['name'] ?></td>
                     <td><?= $item['price'] ?></td>
                     <td>
-                        <form method="POST" style="display:inline-block;" action="/products/delete">
+                        <form method="POST" style="display:inline-block;" action="/products/<?=$item['id']?>/delete">
                             <input type="hidden" name="id" value="<?= $item['id'] ?>">
                             <button type="submit" name="delete" class="btn btn-danger">Delete</button>
                         </form>
+                        <a href="/products/<?=$item['id']?>" type="button" class="btn btn-primary">Update</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

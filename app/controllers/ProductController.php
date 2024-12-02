@@ -22,8 +22,23 @@ class ProductController extends Controller{
         $this->redirect('/');
     }
 
-    public function delete() {
-        $id = $_POST['id'];
+    public function update($id){
+        $data = $_POST;
+        $user = new Product();
+        $user->update($id, [
+            'name' => $data['name'],
+            'price' => $data['price']
+        ]);
+        $this->redirect('/');
+    }
+
+    public function edit($id){
+        $product = new Product();
+        $productData = $product->getById($id);
+        $this->render('product-update', [$productData]);
+    }
+
+    public function delete($id) {
         $product = new Product();
         $product->delete($id);
         $this->redirect('/');

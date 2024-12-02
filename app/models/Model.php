@@ -35,7 +35,7 @@ class Model
     public function create(array $data): bool
     {
         if (!$data) {
-            throw new \Exception('Your data is empty.');
+            throw new \Exception('Create data is empty.');
         }
 
         $columns = implode(', ', array_keys($data));
@@ -44,6 +44,24 @@ class Model
         $query = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->table, $columns, $placeholders);
         $stmt = $this->db->prepare($query);
 
+        return $stmt->execute($data);
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        if (!$data) {
+            throw new \Exception('Update data is empty.');
+        }
+
+        $placeholders = [];
+        foreach ($data as $key => $value) {
+            $placeholders[] = "$key = :$key";
+        }
+    
+        $query = sprintf("UPDATE %s SET %s WHERE id = :id", $this->table, implode(', ', $placeholders));
+        $stmt = $this->db->prepare($query);
+    
+        $data['id'] = $id;
         return $stmt->execute($data);
     }
 

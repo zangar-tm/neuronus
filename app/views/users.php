@@ -49,11 +49,12 @@ $name = $_SESSION['user']['username']??'';
                     <td><?= $item['role'] ?></td>
                     <td>
                         <?php if ($_SESSION['user']['id'] != $item['id']) {?>
-                        <form method="POST" style="display:inline-block;" action="/users/delete">
+                        <form method="POST" style="display:inline-block;" action="/users/<?=$item['id']?>/delete">
                             <input type="hidden" name="id" value="<?= $item['id'] ?>">
                             <button type="submit" name="delete" class="btn btn-danger">Delete</button>
                         </form>
                         <?php }; ?>
+                        <a href="/users/<?=$item['id']?>" type="button" class="btn btn-primary">Update</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
